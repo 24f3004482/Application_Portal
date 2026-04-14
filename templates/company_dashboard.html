@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Company Dashboard{% endblock %}
+
+{% block content %}
+<div class="container"> 
+    <h2>Company dashboard</h2>
+
+    <section>
+        <h3>Account</h3>
+        <p>Login email: {{ company.email }}</p>
+        <p>Approval status: {{ company.approval_state }}</p>
+        {% if profile %}
+        <p>Company name: {{ profile.company_name }}</p>
+        <p>HR contact: {{ profile.hr_contact or '—' }}</p>
+        <p>Website: {% if profile.website %}<a href="{{ profile.website }}">{{ profile.website }}</a>{% else %}—{% endif %}</p>
+        {% endif %}
+        <p><a class="btn btn-outline-primary" href="{{ url_for('company_profile') }}">Edit company profile</a></p>
+    </section>
+
+    <section>
+        <h3>Placement drives</h3>
+        {% if company.approval_state == 'approved' %}
+        <p><a class="btn btn-outline-primary" href="{{ url_for('company_create_drive') }}">Create new drive</a></p>
+        {% else %}
+        <p>You can create drives after an admin approves your company.</p>
+        {% endif %}
+
+        <table class="table" border="1" cellpadding="6" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Job title</th>
+                    <th>Deadline</th>
+                    <th>Applicants</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for drive in drives %}
+                <tr>
+                    <td>{{ drive.job_title }}</td>
+                    <td>{{ drive.deadline }}</td>
+                    <td>{{ drive.applications.count() }}</td>
+                    <td>{{ drive.status }}</td>
+                    <td>
+                        <a class="btn btn-outline-primary" href="{{ url_for('company_view_applications', drive_id=drive.id) }}">View applications</a>
+                        {% if drive.status != 'Closed' %}
+                        |
+                        <a class="btn btn-outline-primary" href="{{ url_for('company_edit_drive', drive_id=drive.id) }}">Edit</a>
+                        |
+                        <form method="post" action="{{ url_for('company_close_drive', drive_id=drive.id) }}" style="display:inline;">
+                            <button class="btn btn-outline-warning" type="submit">Close</button>
+                        </form>
+                        |
+                        <form method="post" action="{{ url_for('company_delete_drive', drive_id=drive.id) }}" style="display:inline;">
+                            <button class="btn btn-outline-danger" type="submit">Remove</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5">No drives created yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}

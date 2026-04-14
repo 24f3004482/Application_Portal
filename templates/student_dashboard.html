@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Student dashboard</h2>
+
+    <section>
+        <h3>Open approved placement drives</h3>
+        <p>Only drives approved by the institute and not past the deadline are listed.</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Job title</th>
+                    <th>Company</th>
+                    <th>Deadline</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for drive in available_drives %}
+                <tr>
+                    <td>{{ drive.job_title }}</td>
+                    <td>
+                        {% set cp = drive.company.company_profile %}
+                        {% if cp %}{{ cp.company_name }}{% else %}{{ drive.company.name }}{% endif %}
+                    </td>
+                    <td>{{ drive.deadline }}</td>
+                    <td><a class="btn btn-outline-primary" href="{{ url_for('student_drive_detail', drive_id=drive.id) }}">View and apply</a></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="4">No open drives at the moment.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h3>My applications</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Job title</th>
+                    <th>Company</th>
+                    <th>Status</th>
+                    <th>Applied</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td>{{ app.drive.job_title }}</td>
+                    <td>
+                        {% set cp = app.drive.company.company_profile %}
+                        {% if cp %}{{ cp.company_name }}{% else %}{{ app.drive.company.name }}{% endif %}
+                    </td>
+                    <td>{{ app.status }}</td>
+                    <td>{{ app.date_applied.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="4">You have not applied to any drive yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <p><a class="btn btn-outline-primary" href="{{ url_for('student_history') }}">Full application history</a> | <a class="btn btn-outline-primary" href="{{ url_for('student_profile') }}">Edit profile</a></p>
+</div>
+    {% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Students{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Students</h2>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('admin_dashboard') }}">Back to admin dashboard</a></p>
+
+    <form method="get" action="{{ url_for('admin_students') }}" class="mb-3">
+        <div class="input-group">
+            <input id="q" type="search" name="q" value="{{ q or '' }}" class="form-control" placeholder="Search by name, email, contact, roll number, or ID">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </div>
+    </form>
+
+    <table class="table" border="1" cellpadding="6" cellspacing="0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Roll / ID</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Blacklisted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in students %}
+            <tr>
+                <td>{{ s.id }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.student_roll or '—' }}</td>
+                <td>{{ s.email }}</td>
+                <td>{{ s.contact or '—' }}</td>
+                <td>{{ 'yes' if s.is_blacklisted else 'no' }}</td>
+                <td>
+                    {% if not s.is_blacklisted %}
+                    <form method="post" action="{{ url_for('admin_student_blacklist', student_id=s.id) }}" style="display:inline;">
+                        <button class="btn btn-outline-danger" type="submit">Blacklist</button>
+                    </form>
+                    {% else %}
+                    <form method="post" action="{{ url_for('admin_student_unblacklist', student_id=s.id) }}" style="display:inline;">
+                        <button class="btn btn-outline-success" type="submit">Remove blacklist</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7">No students found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

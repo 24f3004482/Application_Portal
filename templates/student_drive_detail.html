@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ drive.job_title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ drive.job_title }}</h2>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('student_dashboard') }}">Back to dashboard</a></p>
+
+    <p><strong>Company:</strong>
+        {% if company_profile %}{{ company_profile.company_name }}{% else %}{{ company.name }}{% endif %}
+    </p>
+    {% if company_profile and company_profile.website %}
+    <p><strong>Website:</strong> <a class="btn btn-outline-primary" href="{{ company_profile.website }}" target="_blank">Visit website</a></p>
+    {% endif %}
+
+    <h3>Description</h3>
+    <pre>{{ drive.job_description }}</pre>
+
+    <p><strong>Eligibility:</strong> {{ drive.eligibility }}</p>
+    <p><strong>Application deadline:</strong> {{ drive.deadline }}</p>
+    <p><strong>Drive status:</strong> {{ drive.status }}</p>
+
+    {% if existing_application %}
+    <p><strong>Your status:</strong> {{ existing_application.status }} (applied {{ existing_application.date_applied.strftime('%Y-%m-%d') }})</p>
+    {% elif deadline_passed %}
+    <p>Applications are closed (deadline has passed).</p>
+    {% else %}
+    <form method="post" action="{{ url_for('student_drive_detail', drive_id=drive.id) }}">
+        <button class="btn btn-outline-primary" type="submit">Apply for this drive</button>
+    </form>
+
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}All Applications{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>All applications</h2>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('admin_dashboard') }}">Back to admin dashboard</a></p>
+
+    <table class="table" border="1" cellpadding="6" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Application ID</th>
+                <th>Student ID</th>
+                <th>Student name</th>
+                <th>Drive ID</th>
+                <th>Job title</th>
+                <th>Status</th>
+                <th>Applied on</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in applications %}
+            <tr>
+                <td>{{ a.id }}</td>
+                <td>{{ a.student_id }}</td>
+                <td>{{ a.student.name }}</td>
+                <td>{{ a.drive_id }}</td>
+                <td>{{ a.drive.job_title }}</td>
+                <td>{{ a.status }}</td>
+                <td>{{ a.date_applied.strftime('%Y-%m-%d %H:%M') }} UTC</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7">No applications yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

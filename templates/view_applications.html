@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Applications — {{ drive.job_title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Applications: {{ drive.job_title }}</h2>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('company_dashboard') }}">Back to dashboard</a></p>
+
+    <p>Drive status: {{ drive.status }} | Deadline: {{ drive.deadline }}</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Application ID</th>
+                <th>Student name</th>
+                <th>Email</th>
+                <th>Roll / ID</th>
+                <th>Applied</th>
+                <th>Current status</th>
+                <th>Update status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in applications %}
+            <tr>
+                <td>{{ a.id }}</td>
+                <td>{{ a.student.name }}</td>
+                <td>{{ a.student.email }}</td>
+                <td>{{ a.student.student_roll or '—' }}</td>
+                <td>{{ a.date_applied.strftime('%Y-%m-%d') }}</td>
+                <td>{{ a.status }}</td>
+                <td>
+                    <form method="post" action="{{ url_for('company_application_status', application_id=a.id) }}" class="d-inline">
+                        <select name="status" class="form-select d-inline w-auto">
+                            <option value="Applied" {% if a.status == 'Applied' %}selected{% endif %}>Applied</option>
+                            <option value="Shortlisted" {% if a.status == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
+                            <option value="Selected" {% if a.status == 'Selected' %}selected{% endif %}>Selected</option>
+                            <option value="Rejected" {% if a.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                        <button class="btn btn-outline-primary" type="submit">Save</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7">No applications yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

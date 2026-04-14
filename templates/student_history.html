@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Application History{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Placement application history</h2>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('student_dashboard') }}">Back to dashboard</a></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Job title</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Applied on</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in applications %}
+            <tr>
+                <td>{{ a.drive.job_title }}</td>
+                <td>
+                    {% set cp = a.drive.company.company_profile %}
+                    {% if cp %}{{ cp.company_name }}{% else %}{{ a.drive.company.name }}{% endif %}
+                </td>
+                <td>{{ a.status }}</td>
+                <td>{{ a.date_applied.strftime('%Y-%m-%d %H:%M') }} UTC</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4">No applications in your history.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

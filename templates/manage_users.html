@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Manage users</h2>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('admin_dashboard') }}">Back to admin dashboard</a></p>
+    <p>Use these sections to search, approve, reject, or blacklist institute users.</p>
+    <ul>
+        <li><a class="btn btn-outline-primary" href="{{ url_for('admin_companies') }}">Companies — approve, reject, blacklist</a></li>
+        <li><a class="btn btn-outline-primary" href="{{ url_for('admin_students') }}">Students — search, blacklist</a></li>
+    </ul>
+</div>
+{% endblock %}

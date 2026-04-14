@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Register — Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Registration — {% if role == 'company' %}Company{% else %}Student{% endif %}</h2>
+    <form method="post" action="{{ url_for('register', role=role) }}">
+        <div class="mb-3">
+            <label for="name" class="form-label">{% if role == 'company' %}Contact person name{% else %}Full name{% endif %}</label>
+            <input id="name" type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" type="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" type="password" name="password" class="form-control" required minlength="6">
+        </div>
+        <div class="mb-3">
+            <label for="contact" class="form-label">Phone / contact</label>
+            <input id="contact" type="text" name="contact" class="form-control" required>
+        </div>
+        {% if role == 'student' %}
+        <div class="mb-3">
+            <label for="student_roll" class="form-label">Student roll / ID (optional)</label>
+            <input id="student_roll" type="text" name="student_roll" class="form-control">
+        </div>
+        {% endif %}
+        {% if role == 'company' %}
+        <div class="mb-3">
+            <label for="company_name" class="form-label">Company name</label>
+            <input id="company_name" type="text" name="company_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="hr_contact" class="form-label">HR contact name or phone</label>
+            <input id="hr_contact" type="text" name="hr_contact" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="website" class="form-label">Website (optional)</label>
+            <input id="website" type="url" name="website" class="form-control" placeholder="https://">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Short description (optional)</label>
+            <textarea id="description" name="description" rows="3" class="form-control"></textarea>
+        </div>
+        {% endif %}
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('login') }}">Back to login</a></p>
+</div>
+{% endblock %}

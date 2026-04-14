@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Placement Drive{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Create placement drive</h2>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('company_dashboard') }}">Back to dashboard</a></p>
+
+    <form method="post" action="{{ url_for('company_create_drive') }}">
+        <div class="mb-3">
+            <label for="job_title" class="form-label">Job title</label>
+            <input id="job_title" type="text" name="job_title" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="job_description" class="form-label">Job description</label>
+            <textarea id="job_description" name="job_description" rows="8" class="form-control" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="eligibility" class="form-label">Eligibility criteria</label>
+            <input id="eligibility" type="text" name="eligibility" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="deadline" class="form-label">Application deadline</label>
+            <input id="deadline" type="date" name="deadline" class="form-control" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit drive</button>
+    </form>
+    <p>New drives require admin approval before students can apply.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Admin Dashboard</h2>
+
+    <section>
+        <h3>Statistics</h3>
+        <ul>
+            <li>Total students: {{ stats.students }}</li>
+            <li>Total companies: {{ stats.companies }}</li>
+            <li>Total placement drives: {{ stats.drives }}</li>
+            <li>Total applications: {{ stats.applications }}</li>
+        </ul>
+    </section>
+
+    <nav>
+        <p>
+            <a class="btn btn-outline-primary" href="{{ url_for('admin_manage_users') }}">Manage users</a>
+            |
+            <a class="btn btn-outline-primary" href="{{ url_for('admin_companies') }}">Manage companies</a>
+            |
+            <a class="btn btn-outline-primary" href="{{ url_for('admin_students') }}">Manage students</a>
+            |
+            <a class="btn btn-outline-primary" href="{{ url_for('admin_drives') }}">Placement drives</a>
+            |
+            <a class="btn btn-outline-primary" href="{{ url_for('admin_applications') }}">All applications</a>
+        </p>
+    </nav>
+</div>
+{% endblock %}

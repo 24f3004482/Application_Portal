@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Placement Drives (Admin){% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>All placement drives</h2>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('admin_dashboard') }}">Back to admin dashboard</a></p>
+
+    <table class="table" border="1" cellpadding="6" cellspacing="0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Job title</th>
+                <th>Company ID</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in drives %}
+            <tr>
+                <td>{{ d.id }}</td>
+                <td>{{ d.job_title }}</td>
+                <td>{{ d.company_id }}</td>
+                <td>{{ d.deadline }}</td>
+                <td>{{ d.status }}</td>
+                <td>
+                    {% if d.status == 'Pending' %}
+                    <form method="post" action="{{ url_for('admin_drive_approve', drive_id=d.id) }}" style="display:inline;">
+                        <button class="btn btn-outline-success" type="submit">Approve</button>
+                    </form>
+                    <form method="post" action="{{ url_for('admin_drive_reject', drive_id=d.id) }}" style="display:inline;">
+                        <button class="btn btn-outline-danger" type="submit">Reject</button>
+                    </form>
+                    {% endif %}
+                    {% if d.status not in ['Closed', 'Rejected'] %}
+                    <form method="post" action="{{ url_for('admin_drive_close', drive_id=d.id) }}" style="display:inline;">
+                        <button class="btn btn-outline-warning" type="submit">Close</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6">No drives yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

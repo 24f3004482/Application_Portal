@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Company Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Company profile</h2>
+    <p><a class="btn btn-outline-primary" href="{{ url_for('company_dashboard') }}">Back to dashboard</a></p>
+
+    <form method="post" action="{{ url_for('company_profile') }}">
+        <div class="mb-3">
+            <label for="company_name" class="form-label">Company name</label>
+            <input id="company_name" type="text" name="company_name" value="{{ profile.company_name }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="contact_name" class="form-label">Contact person (display name)</label>
+            <input id="contact_name" type="text" name="contact_name" value="{{ current_user.name }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="contact" class="form-label">Phone / contact</label>
+            <input id="contact" type="text" name="contact" value="{{ current_user.contact or '' }}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="hr_contact" class="form-label">HR contact</label>
+            <input id="hr_contact" type="text" name="hr_contact" value="{{ profile.hr_contact or '' }}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="website" class="form-label">Website</label>
+            <input id="website" type="url" name="website" value="{{ profile.website or '' }}" class="form-control" placeholder="https://">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" name="description" rows="5" class="form-control">{{ profile.description or '' }}</textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+</div>
+{% endblock %}
